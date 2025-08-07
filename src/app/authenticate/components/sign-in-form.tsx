@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { authClient } from "@/lib/auth-client";
 
 const formSchema = z.object({
   email: z.email("E-mail invalido"),
@@ -40,8 +41,8 @@ export default function SignInForm() {
     }
   });
 
-  function onSubmit(values: FormValue){
-    console.log(values)
+  async function onSubmit(values: FormValue){
+    //
   }
 
   return (

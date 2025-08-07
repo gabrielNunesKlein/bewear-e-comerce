@@ -22,6 +22,9 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const formSchema = z
   .object({
@@ -53,9 +56,28 @@ export default function SignUpForm() {
       passwordConfirmation: "",
     },
   });
+
+  const router = useRouter()
   
-  function onSubmit(values: FormValue){
-    console.log(values)
+  async function onSubmit(values: FormValue){
+    const { data, error } = await authClient.signUp.email({
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        fetchOptions: {
+          onSuccess: () => {
+            router.push('/')
+          },
+          onError: (error) => {
+            if(error.error.code === "USER_ALREADY_EXISTS"){
+              toast.error('E-mail já cadastrado.')
+              form.setError('email', { message: 'E-mail já cadastrado.' })
+            }
+
+            toast.error(error.error.message)
+          }
+        },
+    });
   }
 
   return (
