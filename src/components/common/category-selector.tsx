@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button } from '../ui/button'
 import { categoryTable } from '@/db/schema';
+import Link from 'next/link';
 
 interface CategorySelectorProps {
     categories: (typeof categoryTable.$inferSelect)[];
@@ -16,7 +17,9 @@ export default function CategorySelector({ categories }: CategorySelectorProps) 
                         variant="ghost"
                         className="rounded-full bg-white text-xs font-semibold"
                     >
-                        {category.name}
+                        <Link href={`/category/${category.slug}`}>
+                            {category.name}
+                        </Link>
                     </Button>
                 ))}
             </div>
