@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../u
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import Cart from "./cart";
 
 export default function Header() {
 
@@ -16,7 +17,7 @@ export default function Header() {
       <header className="flex items-center justify-between p-5">
         <Image src={"/logo.svg"} alt="BEWEAR" width={100} height={26.14} />
 
-        <div className="flex items-center">
+        <div className="flex items-center gap-3">
           <Sheet>
             <SheetTrigger asChild>
               <Button variant={"outline"} size={"icon"}>
@@ -73,6 +74,7 @@ export default function Header() {
               </div>
             </SheetContent>
           </Sheet>
+          <Cart />
         </div>
       </header>
     );
