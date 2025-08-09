@@ -17,7 +17,7 @@ export default function ProductItem({ product, textContainerClassName }: Product
     const firstVariant = product.variants[0];
 
     return (
-        <Link href="/" className="flex flex-col gap-4">
+        <Link href={`/product-variant/${firstVariant.slug}`} className="flex flex-col gap-4">
         <Image
             src={firstVariant.imageUrl.replace(/^\{+"?|"+\}$/g, '')}
             alt={firstVariant.name}
