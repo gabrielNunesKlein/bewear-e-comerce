@@ -7,6 +7,7 @@ import { ShoppingBasketIcon } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { getCart } from '@/actions/get-cart'
 import Image from 'next/image'
+import CartItem from './cart-item';
 
 export default function Cart() {
 
@@ -28,20 +29,17 @@ export default function Cart() {
                         Carrinho
                     </SheetTitle>
                 </SheetHeader>
-                <div>
+                <div className='space-y-4 px-5'>
                     {cart?.items.map((item) => (
-                        <div key={item.id}>
-                            <Image 
-                                width={68}
-                                height={68}
-                                src={item.productVariant.imageUrl.replace(/^\{+"?|"+\}$/g, '')}
-                                alt={item.productVariant.name}
-                            />
-
-                            <p>
-                                {item.productVariant.name}
-                            </p>
-                        </div>
+                        <CartItem 
+                            key={item.id}
+                            id={item.id}
+                            productName={item.productVariant.product.name}
+                            productVariantImageUrl={item.productVariant.imageUrl.replace(/^\{+"?|"+\}$/g, '')}
+                            productVariantName={item.productVariant.name}
+                            productVariantTotalPriceInCents={item.productVariant.priceInCents}
+                            quantity={item.quantity}
+                        />
                     ))}
                 </div>
             </SheetContent>
