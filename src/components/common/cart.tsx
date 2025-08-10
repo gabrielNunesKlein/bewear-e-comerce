@@ -45,6 +45,7 @@ export default function Cart() {
                                         productVariantName={item.productVariant.name}
                                         productVariantTotalPriceInCents={item.productVariant.priceInCents}
                                         quantity={item.quantity}
+                                        productVariantId={item.productVariantId}
                                     />
                                 ))}
                             </div>

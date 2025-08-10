@@ -6,6 +6,8 @@ import { formatCentsToBRL } from '@/helpers/money';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { removeProdtFromCart } from '@/actions/remove-cart-product';
 import { toast } from 'sonner';
+import { decreaseProductCartQuantity } from '@/actions/decrease-cart-prodct-quantity';
+import { addProductToCart } from '@/actions/add-cart-product';
 
 interface CartItemProps {
     id: string;
@@ -14,9 +16,10 @@ interface CartItemProps {
     productVariantImageUrl: string;
     productVariantTotalPriceInCents: number;
     quantity: number;
+    productVariantId: string;
 }
 
-export default function CartItem({ id, productName, productVariantImageUrl, productVariantName, productVariantTotalPriceInCents, quantity }: CartItemProps) {
+export default function CartItem({ id, productVariantId, productName, productVariantImageUrl, productVariantName, productVariantTotalPriceInCents, quantity }: CartItemProps) {
 
     const queryClient = useQueryClient()
 
@@ -28,6 +31,23 @@ export default function CartItem({ id, productName, productVariantImageUrl, prod
         }
     })
 
+    const decreaseCartProductQuantity = useMutation({
+        mutationKey: ['decrease-product-cart-quantity'],
+        mutationFn: () => decreaseProductCartQuantity({ cartItemId: id }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["cart"] })
+        }
+    })
+
+    const incrementCartProductQuantity = useMutation({
+        mutationKey: ['increment-product-cart-quantity'],
+        mutationFn: () => addProductToCart({ productVariantId, quantity }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["cart"] })
+        }
+    })
+
+
     const handleDeleteClick = () => {
         removeProductFromCartMutation.mutate(undefined, {
             onSuccess: () => {
@@ -38,6 +58,14 @@ export default function CartItem({ id, productName, productVariantImageUrl, prod
                 toast.error("Error ao remover produto do carrinho")
             }
         })
+    }
+
+    const handleDeceaseCartQuantityClick = () => {
+        decreaseCartProductQuantity.mutate()
+    }
+
+    const handleIncrementCartQuantityClick = () => {
+        incrementCartProductQuantity.mutate()
     }
 
     return (
@@ -58,11 +86,11 @@ export default function CartItem({ id, productName, productVariantImageUrl, prod
                     </p>
 
                     <div className="flex w-[100px] p-1 items-center justify-between rounded-lg border">
-                        <Button className='h-4 w-4' size="icon" variant="ghost" onClick={() => {}}>
+                        <Button className='h-4 w-4' size="icon" variant="ghost" onClick={handleDeceaseCartQuantityClick}>
                             <MinusIcon />
                         </Button>
                         <p className='text-xs'>{quantity}</p>
-                        <Button className='h-4 w-4' size="icon" variant="ghost" onClick={() => {}}>
+                        <Button className='h-4 w-4' size="icon" variant="ghost" onClick={handleIncrementCartQuantityClick}>
                             <PlusIcon />
                         </Button>
                     </div>
