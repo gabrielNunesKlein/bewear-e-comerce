@@ -6,7 +6,6 @@ import { Button } from '../ui/button'
 import { ShoppingBasketIcon } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { getCart } from '@/actions/get-cart'
-import Image from 'next/image'
 import CartItem from './cart-item';
 import { ScrollArea } from '../ui/scroll-area';
 import { Separator } from '../ui/separator';

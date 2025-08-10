@@ -3,6 +3,9 @@ import React from 'react'
 import { Button } from '../ui/button';
 import { MinusIcon, PlusIcon, TrashIcon } from 'lucide-react';
 import { formatCentsToBRL } from '@/helpers/money';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { removeProdtFromCart } from '@/actions/remove-cart-product';
+import { toast } from 'sonner';
 
 interface CartItemProps {
     id: string;
@@ -14,6 +17,29 @@ interface CartItemProps {
 }
 
 export default function CartItem({ id, productName, productVariantImageUrl, productVariantName, productVariantTotalPriceInCents, quantity }: CartItemProps) {
+
+    const queryClient = useQueryClient()
+
+    const removeProductFromCartMutation = useMutation({
+        mutationKey: ['remove-product-cart'],
+        mutationFn: () => removeProdtFromCart({ cartItemId: id }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["cart"] })
+        }
+    })
+
+    const handleDeleteClick = () => {
+        removeProductFromCartMutation.mutate(undefined, {
+            onSuccess: () => {
+                toast.success("Produto Removido do carrinho")
+            },
+
+            onError: () => {
+                toast.error("Error ao remover produto do carrinho")
+            }
+        })
+    }
+
     return (
         <div className='flex items-center justify-between'>
             <div className="flex items-center gap-4">
@@ -46,7 +72,7 @@ export default function CartItem({ id, productName, productVariantImageUrl, prod
             </div>
 
             <div className='flex flex-col justify-center items-end gap-1'>
-                <Button variant={'outline'} size={'icon'}>
+                <Button variant={'outline'} size={'icon'} onClick={handleDeleteClick}>
                     <TrashIcon />
                 </Button>
                 <p className="text-xs font-bold">
