@@ -9,10 +9,12 @@ import { ScrollArea } from '../ui/scroll-area';
 import { Separator } from '../ui/separator';
 import { formatCentsToBRL } from '@/helpers/money';
 import { useCart } from '@/hooks/queries/use-cart';
+import { useRouter } from 'next/navigation';
 
 export default function Cart() {
 
     const { data: cart } = useCart()
+    const router = useRouter()
 
     return (
         <Sheet>
@@ -71,7 +73,7 @@ export default function Cart() {
                                 <p>{formatCentsToBRL(cart?.totalPriceInCents ?? 0)}</p>
                             </div>
 
-                            <Button className='rounded-full mt-2'>
+                            <Button className='rounded-full mt-2' onClick={() => router.push('/cart/indentification')}>
                                 Finalizar Compra
                             </Button>
 
