@@ -1,10 +1,12 @@
 'use client';
+import { createCheckoutSession } from '@/actions/create-checkout-session';
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle } from '@/components/ui/dialog'
 import { useFinishOrder } from '@/hooks/mutatios/use-finish-order';
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
+import { loadStripe } from "@stripe/stripe-js";
 
 export default function FinishOrderButton() {
 
@@ -12,8 +14,31 @@ export default function FinishOrderButton() {
 
     const finishOrder = useFinishOrder();
 
-    const handleFinishOrder = () => {
-        finishOrder.mutate()
+    const handleFinishOrder = async () => {
+
+        if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
+            throw new Error("Stripe publishable key is not set");
+        }
+
+        const { orderId } = await finishOrder.mutateAsync()
+
+        const checkoutSession = await createCheckoutSession({
+            orderId
+        })
+
+
+        const stripe = await loadStripe(
+            process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+        );
+
+        if (!stripe) {
+            throw new Error("Failed to load Stripe");
+        }
+
+        await stripe.redirectToCheckout({
+            sessionId: checkoutSession.id,
+        });
+
         setOpenDialogSuccess(true)
     }
 
