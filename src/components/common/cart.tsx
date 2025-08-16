@@ -17,7 +17,7 @@ export default function Cart() {
     const router = useRouter()
 
     return (
-        <Sheet>
+        <Sheet modal={false}>
             <SheetTrigger asChild>
                 <Button variant="outline" size="icon">
                     <ShoppingBasketIcon />

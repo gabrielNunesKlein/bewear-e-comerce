@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "../ui/button";
-import { LogInIcon, LogOutIcon, MenuIcon } from 'lucide-react'
+import { LogInIcon, LogOutIcon, MenuIcon, UserIcon } from 'lucide-react'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
@@ -14,11 +14,18 @@ export default function Header() {
     const { data: session } = authClient.useSession()
 
     return (
-      <header className="flex items-center justify-between p-5">
+      <>
+      <header className="flex items-center justify-between p-5 md:px-11 max-w-7xl">
+        <div className="md:flex space-x-3 hidden">
+          <UserIcon />
+          <span className="font-bold">
+            Olá, {session?.user?.name}
+          </span>
+        </div>
         <Image src={"/logo.svg"} alt="BEWEAR" width={100} height={26.14} />
 
         <div className="flex items-center gap-3">
-          <Sheet>
+          <Sheet modal={false}>
             <SheetTrigger asChild>
               <Button variant={"outline"} size={"icon"}>
                 <MenuIcon />
@@ -77,5 +84,16 @@ export default function Header() {
           <Cart />
         </div>
       </header>
+
+      <div className="flex justify-around p-5 px-20 max-w-7xl">
+        <p>Teste</p>
+        <p>Teste</p>
+        <p>Teste</p>
+        <p>Teste</p>
+        <p>Teste</p>
+        <p>Teste</p>
+      </div>
+
+      </>
     );
 }

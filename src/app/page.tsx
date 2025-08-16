@@ -36,29 +36,46 @@ export default async function Home() {
             height={0}
             width={0}
             sizes="100vw"
-            className="h-auto w-full"
+            className="h-auto w-full object-fill object-center md:max-h-[1200px]"
           />
         </div>
 
         <ProductList products={products} title="Mais Vendidos" />
 
-        <div className="px-5">
+        <div className="flex px-5 md:hidden">
           <CategorySelector categories={categories} />
         </div>
 
-        <div className="px-5">
+        <div className="grid grid-cols-1 gap-3 px-5 md:grid-cols-2 md:px-0">
+          <div className="hidden w-full flex-col space-y-3 md:flex">
+            <Image
+              src="/tenis-02.png"
+              alt="Leve uma vida com estilo"
+              height={0}
+              width={0}
+              sizes="100vw"
+              className="h-auto w-full object-fill md:max-h-[307px]"
+            />
+            <Image
+              src="/tenis-01.png"
+              alt="Leve uma vida com estilo"
+              height={0}
+              width={0}
+              sizes="100vw"
+              className="h-auto w-full object-fill md:max-h-[307px]"
+            />
+          </div>
           <Image
             src="/banner-02.png"
             alt="Leve uma vida com estilo"
             height={0}
             width={0}
             sizes="100vw"
-            className="h-auto w-full"
+            className="h-auto w-full md:max-h-[638px]"
           />
         </div>
 
         <ProductList products={newlyCreatedProducts} title="Novos produtos" />
-
       </div>
     </>
   );
